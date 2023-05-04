@@ -26,11 +26,11 @@ PostgreSQL
 - [ ] Um barbeiro pode ter mais de uma especialidade
 - [ ] Um agendamento só pode ser cancelado até duas horas antes do horário marcado
 - [ ] Barbeiros só podem ser cadastrados por ADMs
+- [ ] No momento de agendar horário, os barbeiros devem ser listados por especialidade
 
 ### Não funcionais
 - [ ] As senhas dos usuários devem ser criptografadas
 - [ ] A autenticação de clientes deve se dar a partir de um JWT
-- [ ] Os dados da aplicação deverão ser persistidos em um banco ProtgreSQL
+- [x] Os dados da aplicação deverão ser persistidos em um banco ProtgreSQL
 - [ ] A barbearia funciona todos os dias de 8:00h às 18:00h
-- [ ] No momento de agendar horário, os barbeiros devem ser listados por especialidade
 - [ ] Um atendimento demora exatamente 30 minutos

@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  click-beard-postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_USER=docker
+      - POSTGRES_DB=click-beard
+    volumes:
+      - $HOME/docker/volumes/click-beard/postgres:/var/lib/postgresql/data
