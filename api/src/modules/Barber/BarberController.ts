@@ -1,9 +1,10 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
-import { save } from './BarberService';
+import { BarberService } from './BarberService';
+import { PostgresBarberRepository } from './PostgresBarberRepository';
 
-export async function create(request: FastifyRequest, reply: FastifyReply) {
+export async function save(request: FastifyRequest, reply: FastifyReply) {
   const bodySchema = z.object({
     name: z.string(),
     age: z.number().positive().int(),
@@ -12,7 +13,10 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 
   const body = bodySchema.parse(request.body);
 
-  save(body);
+  const barberRepository = new PostgresBarberRepository();
+  const barberService = new BarberService(barberRepository);
+
+  barberService.save(body);
 
   return reply.status(201).send();
 }

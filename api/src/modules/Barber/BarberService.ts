@@ -1,13 +1,17 @@
 import { randomUUID } from 'crypto';
 
 import { Barber } from './Barber';
-import { create } from './BarberRepository';
+import { BarberRepository } from './BarberRepository';
 
-export function save(barber: Omit<Barber, 'id'>) {
-  const params = {
-    id: randomUUID(),
-    ...barber
-  };
+export class BarberService {
+  constructor (private barberRepository: BarberRepository) {}
 
-  create(params);
+  save(barber: Omit<Barber, 'id'>) {
+    const params = {
+      id: randomUUID(),
+      ...barber
+    };
+
+    this.barberRepository.save(params);
+  }
 }
