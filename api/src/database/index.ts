@@ -1,5 +1,6 @@
-import { env } from '@/env';
 import { Pool } from 'pg';
+
+import { env } from '@/env';
 
 export const pool = new Pool({
   user: env.DATABASE_USER,
