@@ -1,7 +1,10 @@
 import { FastifyInstance } from 'fastify';
 
-import { save } from '@/modules/Barber/BarberController';
+import * as BarberController from '@/modules/Barber/BarberController';
+import * as SpecialtyController from '@/modules/Specialty/SpecialtyController';
 
 export async function appRoutes(app: FastifyInstance) {
-  app.post('/barbers', save);
+  app.post('/barbers', BarberController.save);
+
+  app.post('/specialties', SpecialtyController.save);
 }

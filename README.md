@@ -34,3 +34,5 @@ PostgreSQL
 - [x] Os dados da aplicação deverão ser persistidos em um banco ProtgreSQL
 - [ ] A barbearia funciona todos os dias de 8:00h às 18:00h
 - [ ] Um atendimento demora exatamente 30 minutos
+- [ ] A API deve ser documentada utilizando o Swagger
+- [ ] O processo para executar a aplicação localmente deve ser docuemntado
