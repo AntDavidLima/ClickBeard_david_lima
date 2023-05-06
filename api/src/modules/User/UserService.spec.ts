@@ -4,12 +4,18 @@ import { compare } from 'bcrypt';
 import { ResourceAlreadyExistsError } from '@/Errors/ResourceAlreadyExistsError';
 import { InMemoryUserRepository } from './InMemoryUserRepository';
 import { UserService } from './UserService';
+import { beforeEach } from 'node:test';
+
+let userRepository: InMemoryUserRepository;
+let userService: UserService;
 
 describe('User service', () => {
-  it('should generate a valid UUID for the user', async () => {
-    const userRepository = new InMemoryUserRepository();
-    const userService = new UserService(userRepository);
+  beforeEach(() => {
+    userRepository = new InMemoryUserRepository();
+    userService = new UserService(userRepository);
+  });
 
+  it('should generate a valid UUID for the user', async () => {
     const user = await userService.save({
       name: 'Jon Doe',
       email: 'jon@doe.com',
@@ -21,9 +27,6 @@ describe('User service', () => {
   });
 
   it('should not allow multiple users with the same email', async () => {
-    const userRepository = new InMemoryUserRepository();
-    const userService = new UserService(userRepository);
-
     await userService.save({
       name: 'Jon Doe',
       email: 'jon@doe.com',
@@ -38,9 +41,6 @@ describe('User service', () => {
   });
 
   it('should hash the user password', async () => {
-    const userRepository = new InMemoryUserRepository();
-    const userService = new UserService(userRepository);
-
     const password = '123456';
 
     const user = await userService.save({

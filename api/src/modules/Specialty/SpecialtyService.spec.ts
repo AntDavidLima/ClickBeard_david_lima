@@ -3,12 +3,18 @@ import { describe, expect, it } from 'vitest';
 import { SpecialtyService } from './SpecialtyService';
 import { InMemorySpecialtyRepository } from './InMemorySpecialtyRepository';
 import { ResourceAlreadyExistsError } from '@/Errors/ResourceAlreadyExistsError';
+import { beforeEach } from 'node:test';
+
+let specialtyRepository: InMemorySpecialtyRepository;
+let specialtyService: SpecialtyService;
 
 describe('Specialty service', () => {
-  it('should generate a valid UUID for the specialty', async () => {
-    const specialtyRepository = new InMemorySpecialtyRepository();
-    const specialtyService = new SpecialtyService(specialtyRepository);
+  beforeEach(() => {
+    specialtyRepository = new InMemorySpecialtyRepository();
+    specialtyService = new SpecialtyService(specialtyRepository);
+  });
 
+  it('should generate a valid UUID for the specialty', async () => {
     const specialty = await specialtyService.save({ name: 'Barba' }); 
 
     expect(specialty).toHaveProperty('id');
@@ -16,9 +22,6 @@ describe('Specialty service', () => {
   });
 
   it('should not allow two specialties with the same name', async () => {
-    const specialtyRepository = new InMemorySpecialtyRepository();
-    const specialtyService = new SpecialtyService(specialtyRepository);
-    
     await specialtyService.save({ name: 'Barba' });
 
     await expect(() => specialtyService.save({ name: 'Barba' })).rejects.toBeInstanceOf(ResourceAlreadyExistsError);

@@ -1,14 +1,11 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
-import { PostgresSpecializationRepository } from './PostgresSpecializationRepository';
-import { SpecializationService } from './SpecializationService';
 import { Specialization } from './Specialization';
 import { UnableToAccessDatabaseError } from '@/Errors/UnableToAccessDatabaseError';
 import { ResourceAlreadyExistsError } from '@/Errors/ResourceAlreadyExistsError';
-import { PostgresBarberRepository } from '../Barber/PostgresBarberRepository';
-import { PostgresSpecialtyRepotitory } from '../Specialty/PostgresSpecialtyRepository';
 import { ResourceNotFoundError } from '@/Errors/ResourceNotFoudError';
+import { SpecializationServiceFactory } from './SpecializatoinServiceFactory';
 
 export async function save(request: FastifyRequest, reply: FastifyReply) {
   const bodySchema = z.object({
@@ -19,11 +16,7 @@ export async function save(request: FastifyRequest, reply: FastifyReply) {
   try {
     const body = bodySchema.parse(request.body);
 
-    const specializationRepository = new PostgresSpecializationRepository();
-    const barberRepository = new PostgresBarberRepository();
-    const specialtyRepository = new PostgresSpecialtyRepotitory();
-
-    const specializationService = new SpecializationService(specializationRepository, barberRepository, specialtyRepository);
+    const specializationService = SpecializationServiceFactory.make();
 
     const barber = await specializationService.save(body as Specialization);
 

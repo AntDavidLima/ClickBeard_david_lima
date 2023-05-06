@@ -1,9 +1,8 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
-import { BarberService } from './BarberService';
-import { PostgresBarberRepository } from './PostgresBarberRepository';
 import { UnableToAccessDatabaseError } from '@/Errors/UnableToAccessDatabaseError';
+import { BarberServiceFactory } from './BarberServiceFactory';
 
 export async function save(request: FastifyRequest, reply: FastifyReply) {
   const bodySchema = z.object({
@@ -15,8 +14,7 @@ export async function save(request: FastifyRequest, reply: FastifyReply) {
   try {
     const body = bodySchema.parse(request.body);
 
-    const barberRepository = new PostgresBarberRepository();
-    const barberService = new BarberService(barberRepository);
+    const barberService = BarberServiceFactory.make();
 
     const barber = await barberService.save(body);
 

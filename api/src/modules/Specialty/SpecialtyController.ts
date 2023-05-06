@@ -1,9 +1,9 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
-import { PostgresSpecialtyRepotitory } from './PostgresSpecialtyRepository';
-import { SpecialtyService } from './SpecialtyService';
+
 import { ResourceAlreadyExistsError } from '@/Errors/ResourceAlreadyExistsError';
 import { UnableToAccessDatabaseError } from '@/Errors/UnableToAccessDatabaseError';
+import { SpecialtyServiceFactory } from './SpecialtyServiceFactory';
 
 export async function save(request: FastifyRequest, reply: FastifyReply) {
   const bodySchema = z.object({
@@ -13,8 +13,7 @@ export async function save(request: FastifyRequest, reply: FastifyReply) {
   try {
     const body = bodySchema.parse(request.body);
 
-    const specialtyRepository = new PostgresSpecialtyRepotitory();
-    const specialtyService = new SpecialtyService(specialtyRepository);
+    const specialtyService = SpecialtyServiceFactory.make();
 
     const specialty = await specialtyService.save(body);
 

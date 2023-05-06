@@ -5,7 +5,7 @@ import { Specialty } from './Specialty';
 import { SpecialtyRepository } from './SpecialtyRepository';
 import { UnableToAccessDatabaseError } from '@/Errors/UnableToAccessDatabaseError';
 
-export class PostgresSpecialtyRepotitory implements SpecialtyRepository {
+export class PostgresSpecialtyRepository implements SpecialtyRepository {
   async findById(id: UUID) {
     const client = await pool.connect();
       

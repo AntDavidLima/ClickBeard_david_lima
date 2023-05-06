@@ -1,9 +1,9 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
-import { PostgresUserRepository } from './PostgresUserRepository';
-import { UserService } from './UserService';
+
 import { UnableToAccessDatabaseError } from '@/Errors/UnableToAccessDatabaseError';
 import { ResourceAlreadyExistsError } from '@/Errors/ResourceAlreadyExistsError';
+import { UserSerticeFactory } from './UserServiceFactory';
 
 export async function save(request: FastifyRequest, reply: FastifyReply) {
   const bodySchema = z.object({
@@ -15,8 +15,7 @@ export async function save(request: FastifyRequest, reply: FastifyReply) {
   try {
     const body = bodySchema.parse(request.body);
 
-    const userRepository = new PostgresUserRepository();
-    const userService = new UserService(userRepository);
+    const userService = UserSerticeFactory.make();
 
     const user = await userService.save(body);
 
