@@ -1,13 +1,17 @@
+import { UUID } from 'crypto';
+
 import { Specialty } from './Specialty';
 import { SpecialtyRepository } from './SpecialtyRepository';
 
 export class InMemorySpecialtyRepository implements SpecialtyRepository {
   private specialties: Specialty[] = [];
 
-  async findByName(name: string) {
-    const result = this.specialties.filter(specialty => specialty.name.toLowerCase === name.toLowerCase); 
+  async findById(id: UUID) {
+    return this.specialties.find(specialty => specialty.id === id) ?? null;
+  }
 
-    return result[0];
+  async findByName(name: string) {
+    return this.specialties.find(specialty => specialty.name.toLowerCase === name.toLowerCase) ?? null; 
   }
 
   async save(specialty: Specialty) {

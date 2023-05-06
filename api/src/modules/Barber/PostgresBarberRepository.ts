@@ -1,9 +1,27 @@
+import { UUID } from 'crypto';
+
 import { pool } from '@/database';
 import { Barber } from './Barber';
 import { BarberRepository } from './BarberRepository';
 import { UnableToAccessDatabaseError } from '@/Errors/UnableToAccessDatabaseError';
 
 export class PostgresBarberRepository implements BarberRepository {
+  async findById(id: UUID) {
+    const client = await pool.connect();
+      
+    const sql = 'SELECT * FROM barbers WHERE id = $1';
+
+    try {
+      const result = await client.query(sql, [id]);
+    
+      return result.rows[0] ?? null;
+    } catch (error) {
+      throw new UnableToAccessDatabaseError(error as Error);
+    } finally {
+      client.release();
+    }
+  }
+  
   async save(barber: Barber) {
     const client = await pool.connect();
       

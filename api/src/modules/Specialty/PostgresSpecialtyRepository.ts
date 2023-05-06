@@ -1,9 +1,27 @@
+import { UUID } from 'crypto';
+
 import { pool } from '@/database';
 import { Specialty } from './Specialty';
 import { SpecialtyRepository } from './SpecialtyRepository';
 import { UnableToAccessDatabaseError } from '@/Errors/UnableToAccessDatabaseError';
 
 export class PostgresSpecialtyRepotitory implements SpecialtyRepository {
+  async findById(id: UUID) {
+    const client = await pool.connect();
+      
+    const sql = 'SELECT * FROM specialties WHERE id = $1';
+  
+    try {
+      const result = await client.query(sql, [id]);
+      
+      return result.rows[0] ?? null;
+    } catch (error) {
+      throw new UnableToAccessDatabaseError(error as Error);
+    } finally {
+      client.release();
+    }
+  }
+
   async findByName(name: string) {
     const client = await pool.connect();
       
@@ -12,7 +30,7 @@ export class PostgresSpecialtyRepotitory implements SpecialtyRepository {
     try {
       const result = await client.query(sql, [name]);
       
-      return result.rows[0];
+      return result.rows[0] ?? null;
     } catch (error) {
       throw new UnableToAccessDatabaseError(error as Error);
     } finally {
