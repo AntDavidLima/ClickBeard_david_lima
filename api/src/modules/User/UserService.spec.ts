@@ -1,10 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { compare } from 'bcrypt';
 
 import { ResourceAlreadyExistsError } from '@/Errors/ResourceAlreadyExistsError';
 import { InMemoryUserRepository } from './InMemoryUserRepository';
 import { UserService } from './UserService';
-import { beforeEach } from 'node:test';
 
 let userRepository: InMemoryUserRepository;
 let userService: UserService;

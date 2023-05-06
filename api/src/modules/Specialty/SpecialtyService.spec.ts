@@ -1,9 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { SpecialtyService } from './SpecialtyService';
 import { InMemorySpecialtyRepository } from './InMemorySpecialtyRepository';
 import { ResourceAlreadyExistsError } from '@/Errors/ResourceAlreadyExistsError';
-import { beforeEach } from 'node:test';
 
 let specialtyRepository: InMemorySpecialtyRepository;
 let specialtyService: SpecialtyService;
