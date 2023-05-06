@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { BarberService } from './BarberService';
 import { PostgresBarberRepository } from './PostgresBarberRepository';
-import { UnableToPersistDataError } from '@/Errors/UnableToPersistDataError';
+import { UnableToAccessDatabaseError } from '@/Errors/UnableToAccessDatabaseError';
 
 export async function save(request: FastifyRequest, reply: FastifyReply) {
   const bodySchema = z.object({
@@ -22,7 +22,7 @@ export async function save(request: FastifyRequest, reply: FastifyReply) {
 
     return reply.status(201).send(barber);
   } catch (error) {
-    if (error instanceof UnableToPersistDataError) {
+    if (error instanceof UnableToAccessDatabaseError) {
       return reply.status(500).send({ message: error.message });
     }
 

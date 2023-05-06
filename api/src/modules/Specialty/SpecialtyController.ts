@@ -2,7 +2,8 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 import { PostgresSpecialtyRepotitory } from './PostgresSpecialtyRepository';
 import { SpecialtyService } from './SpecialtyService';
-import { UnableToPersistDataError } from '@/Errors/UnableToPersistDataError';
+import { ResourceAlreadyExistsError } from '@/Errors/ResourceAlreadyExistsError';
+import { UnableToAccessDatabaseError } from '@/Errors/UnableToAccessDatabaseError';
 
 export async function save(request: FastifyRequest, reply: FastifyReply) {
   const bodySchema = z.object({
@@ -19,8 +20,12 @@ export async function save(request: FastifyRequest, reply: FastifyReply) {
 
     return reply.status(201).send(specialty);
   } catch (error) {
-    if (error instanceof UnableToPersistDataError) {
+    if (error instanceof UnableToAccessDatabaseError) {
       return reply.status(500).send({ message: error.message });
+    }
+
+    if (error instanceof ResourceAlreadyExistsError) {
+      return reply.status(409).send({ message: error.message });
     }
 
     throw error;

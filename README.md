@@ -27,6 +27,7 @@ PostgreSQL
 - [ ] Um agendamento só pode ser cancelado até duas horas antes do horário marcado
 - [ ] Barbeiros só podem ser cadastrados por ADMs
 - [ ] No momento de agendar horário, os barbeiros devem ser listados por especialidade
+- [ ] Não podem existir mais de uma especialidade com o mesmo nome
 
 ### Não funcionais
 - [ ] As senhas dos usuários devem ser criptografadas

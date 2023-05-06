@@ -1,9 +1,25 @@
 import { pool } from '@/database';
 import { Specialty } from './Specialty';
 import { SpecialtyRepository } from './SpecialtyRepository';
-import { UnableToPersistDataError } from '@/Errors/UnableToPersistDataError';
+import { UnableToAccessDatabaseError } from '@/Errors/UnableToAccessDatabaseError';
 
 export class PostgresSpecialtyRepotitory implements SpecialtyRepository {
+  async findByName(name: string) {
+    const client = await pool.connect();
+      
+    const sql = 'SELECT * FROM specialties WHERE LOWER(name) = LOWER($1)';
+  
+    try {
+      const result = await client.query(sql, [name]);
+      
+      return result.rows[0];
+    } catch (error) {
+      throw new UnableToAccessDatabaseError(error as Error);
+    } finally {
+      client.release();
+    }
+  }
+
   async save(specialty: Specialty) {
     const client = await pool.connect();
       
@@ -17,7 +33,7 @@ export class PostgresSpecialtyRepotitory implements SpecialtyRepository {
       
       return result.rows[0];
     } catch (error) {
-      throw new UnableToPersistDataError(error as Error);
+      throw new UnableToAccessDatabaseError(error as Error);
     } finally {
       client.release();
     }

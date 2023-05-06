@@ -1,7 +1,7 @@
 import { pool } from '@/database';
 import { Barber } from './Barber';
 import { BarberRepository } from './BarberRepository';
-import { UnableToPersistDataError } from '@/Errors/UnableToPersistDataError';
+import { UnableToAccessDatabaseError } from '@/Errors/UnableToAccessDatabaseError';
 
 export class PostgresBarberRepository implements BarberRepository {
   async save(barber: Barber) {
@@ -17,7 +17,7 @@ export class PostgresBarberRepository implements BarberRepository {
       
       return result.rows[0];
     } catch (error) {
-      throw new UnableToPersistDataError(error as Error);
+      throw new UnableToAccessDatabaseError(error as Error);
     } finally {
       client.release();
     }
