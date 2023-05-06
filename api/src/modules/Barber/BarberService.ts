@@ -6,12 +6,12 @@ import { BarberRepository } from './BarberRepository';
 export class BarberService {
   constructor (private barberRepository: BarberRepository) {}
 
-  save(barber: Omit<Barber, 'id'>) {
+  async save(barber: Omit<Barber, 'id'>) {
     const params = {
       id: randomUUID(),
       ...barber
     };
 
-    this.barberRepository.save(params);
+    return await this.barberRepository.save(params);
   }
 }

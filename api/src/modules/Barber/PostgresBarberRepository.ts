@@ -12,6 +12,10 @@ export class PostgresBarberRepository implements BarberRepository {
 
     try {
       await client.query(sql, params);
+    
+      const result = await client.query('SELECT * FROM barbers WHERE id = $1', [barber.id]);
+      
+      return result.rows[0];
     } catch (error) {
       throw new UnableToPersistDataError(error as Error);
     } finally {

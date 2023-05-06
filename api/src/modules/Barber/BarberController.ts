@@ -18,9 +18,9 @@ export async function save(request: FastifyRequest, reply: FastifyReply) {
     const barberRepository = new PostgresBarberRepository();
     const barberService = new BarberService(barberRepository);
 
-    barberService.save(body);
+    const barber = await barberService.save(body);
 
-    return reply.status(201).send();
+    return reply.status(201).send(barber);
   } catch (error) {
     if (error instanceof UnableToPersistDataError) {
       return reply.status(500).send({ message: error.message });
