@@ -3,6 +3,7 @@ import * as Form from '@radix-ui/react-form';
 import logo from '../../assets/logo-light.png';
 
 import styles from './style.module.css';
+import { Link } from 'react-router-dom';
 
 export function Signin() {
   return (
@@ -32,9 +33,9 @@ export function Signin() {
           ou
           <hr className="flex-1" />
         </div>
-        <a href="/signup" className="text-amber-600 text-center">
+        <Link to="/signup" className="text-amber-600 text-center">
           Criar uma conta
-        </a>
+        </Link>
       </Form.Root>
     </main>
   );

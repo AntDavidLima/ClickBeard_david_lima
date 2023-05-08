@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsx watch src/server.ts",
+    "start:dev": "tsx watch src/server.ts",
+    "start": "node build/server.ts",
+    "build": "tsup src --out-dir build",
     "test": "vitest run",
     "test:watch": "vitest"
   },
@@ -17,6 +19,7 @@
     "@typescript-eslint/eslint-plugin": "^5.59.2",
     "@typescript-eslint/parser": "^5.59.2",
     "eslint": "^8.39.0",
+    "tsup": "^6.7.0",
     "tsx": "^3.12.7",
     "typescript": "^5.0.4",
     "vite-tsconfig-paths": "^4.2.0",
