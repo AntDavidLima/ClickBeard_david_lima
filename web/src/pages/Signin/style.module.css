@@ -1,5 +1,5 @@
 main {
-  background-image: url('./assets/background.jpg');
+  background-image: url('../../assets/background.jpg');
   @apply bg-no-repeat bg-cover h-screen flex items-center justify-center;
 }
 
