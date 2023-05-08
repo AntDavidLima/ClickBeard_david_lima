@@ -1,0 +1,12 @@
+main {
+  background-image: url('./assets/background.jpg');
+  @apply bg-no-repeat bg-cover h-screen flex items-center justify-center;
+}
+
+input {
+  @apply bg-gray-800 rounded-lg p-2 w-full;
+}
+
+input:focus {
+  @apply outline outline-amber-600 outline-2;
+}
