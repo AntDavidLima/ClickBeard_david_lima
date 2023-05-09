@@ -5,13 +5,13 @@ import { UserRepository } from './UserRepository';
 import { ResourceAlreadyExistsError } from '@/Errors/ResourceAlreadyExistsError';
 
 interface User {
-  name: string
-  email: string
-  password: string
+  name: string;
+  email: string;
+  password: string;
 }
 
 export class UserService {
-  constructor (private userRepository: UserRepository) {}
+  constructor(private userRepository: UserRepository) {}
 
   async save(user: User) {
     const userExists = await this.userRepository.findByEmail(user.email);
@@ -28,6 +28,6 @@ export class UserService {
       password_hash: await bcrypt.hash(password, 6),
     };
 
-    return this.userRepository.save(params);
+    this.userRepository.save(params);
   }
 }

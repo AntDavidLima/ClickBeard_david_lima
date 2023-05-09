@@ -1,12 +1,11 @@
 import { Link } from 'react-router-dom';
-import logo from '../../assets/logo-light.png';
 import { SignOut } from '@phosphor-icons/react';
 
 export function Header() {
   return (
     <header className="p-3 bg-gray-800 flex justify-between items-center">
       <div className="flex items-center gap-6 font-semibold">
-        <img src={logo} width={48} />
+        <img src="logo-light.png" width={48} />
         <nav>
           <ul className="flex text-white gap-4">
             <li>
