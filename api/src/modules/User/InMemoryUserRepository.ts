@@ -10,5 +10,7 @@ export class InMemoryUserRepository implements UserRepository {
 
   async save(user: User) {
     this.users.push(user);
+
+    return user;
   }
 }

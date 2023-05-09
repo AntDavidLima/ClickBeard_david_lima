@@ -28,6 +28,6 @@ export class UserService {
       password_hash: await bcrypt.hash(password, 6),
     };
 
-    this.userRepository.save(params);
+    return this.userRepository.save(params);
   }
 }

@@ -12,6 +12,12 @@ export class PostgresUserRepository implements UserRepository {
 
     try {
       await client.query(sql, params);
+
+      const { rows } = await client.query('SELECT * FROM users WHERE id = $1', [
+        user.id,
+      ]);
+
+      return rows[0] ?? null;
     } catch (error) {
       throw new UnableToAccessDatabaseError(error as Error);
     } finally {

@@ -1,11 +1,13 @@
 import * as Form from '@radix-ui/react-form';
 import { FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Input } from '../../components/Input';
 import { api } from '../../api';
 
 export function Signup() {
+  const navigate = useNavigate();
+
   return (
     <main
       className={
@@ -71,6 +73,8 @@ export function Signup() {
       });
 
       localStorage.setItem('token', data.token);
+
+      navigate('/scheduling');
     } catch (error) {
       console.error(error);
     }

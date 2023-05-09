@@ -1,16 +1,23 @@
 import * as Form from '@radix-ui/react-form';
-import { Link } from 'react-router-dom';
+import { FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Input } from '../../components/Input';
+import { api } from '../../api';
 
 export function Signin() {
+  const navigate = useNavigate();
+
   return (
     <main
       className={
         'bg-[url(background.jpg)] h-screen bg-cover bg-no-repeat flex bg-center items-center justify-center'
       }
     >
-      <Form.Root className="bg-gray-950 bg-opacity-90 rounded text-white font-semibold gap-4 flex flex-col w-96 p-12 mx-4">
+      <Form.Root
+        onSubmit={handleSubmit}
+        className="bg-gray-950 bg-opacity-90 rounded text-white font-semibold gap-4 flex flex-col w-96 p-12 mx-4"
+      >
         <div className="flex flex-col items-center">
           <img src="logo-light.png" width={100} alt="Logo" />
           <h1 className="text-3xl font-mono my-4">Login</h1>
@@ -41,4 +48,27 @@ export function Signin() {
       </Form.Root>
     </main>
   );
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const { password, email } = event.currentTarget
+      .elements as typeof event.currentTarget.elements & {
+      email: { value: string };
+      password: { value: string };
+    };
+
+    try {
+      const { data } = await api.post<{ token: string }>('/users/session', {
+        email: email.value,
+        password: password.value,
+      });
+
+      localStorage.setItem('token', data.token);
+
+      navigate('/scheduling');
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
