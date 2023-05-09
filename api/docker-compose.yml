@@ -1,6 +1,14 @@
 version: '3'
 
 services:
+  click-beard-api:
+    build: .
+    ports:
+      - 3333:3333
+    volumes:
+      - api-data:/usr/api
+    depends_on:
+      - click-beard-postgres
   click-beard-postgres:
     image: postgres
     ports:
@@ -13,3 +21,4 @@ services:
       - postgres-data:/var/lib/postgresql/data
 volumes:
   postgres-data:
+  api-data:

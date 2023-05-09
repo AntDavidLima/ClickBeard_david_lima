@@ -1,0 +1,8 @@
+build
+node_modules
+.dockerignore
+.env.example
+.eslintignore
+.eslintrc.js
+docker-compose.yml
+Dockerfile
