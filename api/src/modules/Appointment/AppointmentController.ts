@@ -10,7 +10,6 @@ import { ResourceNotFoundError } from '@/Errors/ResourceNotFoudError';
 export async function save(request: FastifyRequest, reply: FastifyReply) {
   const bodySchema = z.object({
     appointment_time: z.coerce.date(),
-    client_id: z.string().uuid(),
     specialty_id: z.string().uuid(),
     barber_id: z.string().uuid(),
   });
@@ -18,11 +17,22 @@ export async function save(request: FastifyRequest, reply: FastifyReply) {
   try {
     const body = bodySchema.parse(request.body);
 
+    await request.jwtVerify();
+
+    const appointmentBody = {
+      appointment_time: body.appointment_time,
+      client_id: request.user.sub,
+      specialty_id: body.specialty_id,
+      barber_id: body.barber_id,
+    };
+
     const appointmentService = AppointmentServiceFactory.make();
 
-    const barber = await appointmentService.save(body as Appointment);
+    const appointment = await appointmentService.save(
+      appointmentBody as Appointment
+    );
 
-    return reply.status(201).send(barber);
+    return reply.status(201).send(appointment);
   } catch (error) {
     if (error instanceof UnableToAccessDatabaseError) {
       return reply.status(500).send({ message: error.message });

@@ -4,14 +4,18 @@ import { Barber } from './Barber';
 import { BarberRepository } from './BarberRepository';
 
 export class BarberService {
-  constructor (private barberRepository: BarberRepository) {}
+  constructor(private barberRepository: BarberRepository) {}
 
   async save(barber: Omit<Barber, 'id'>) {
     const params = {
       id: randomUUID(),
-      ...barber
+      ...barber,
     };
 
     return await this.barberRepository.save(params);
+  }
+
+  async index() {
+    return await this.barberRepository.findAll();
   }
 }

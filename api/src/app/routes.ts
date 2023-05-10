@@ -7,6 +7,7 @@ import * as SpecializationController from '@/modules/Specialization/Specializati
 import * as UserController from '@/modules/User/UserController';
 import * as UserAuthenticationController from '@/modules/User/UserAuthenticationController';
 import * as AppointmentController from '@/modules/Appointment/AppointmentController';
+import * as AppointmentByDayController from '@/modules/Appointment/AppointmentByDayController';
 
 export async function appRoutes(app: FastifyInstance) {
   app.post('/users', UserController.save);
@@ -15,11 +16,17 @@ export async function appRoutes(app: FastifyInstance) {
   app.get('/users', { onRequest: [veryfyJWT] }, UserController.show);
 
   app.post('/barbers', { onRequest: [veryfyJWT] }, BarberController.save);
+  app.get('/barbers', { onRequest: [veryfyJWT] }, BarberController.index);
 
   app.post(
     '/specialties',
     { onRequest: [veryfyJWT] },
     SpecialtyController.save
+  );
+  app.get(
+    '/specialties',
+    { onRequest: [veryfyJWT] },
+    SpecialtyController.index
   );
 
   app.post(
@@ -33,6 +40,13 @@ export async function appRoutes(app: FastifyInstance) {
     { onRequest: [veryfyJWT] },
     AppointmentController.save
   );
+
+  app.get(
+    '/appointments/date',
+    { onRequest: [veryfyJWT] },
+    AppointmentByDayController.index
+  );
+
   app.delete(
     '/appointments',
     { onRequest: [veryfyJWT] },

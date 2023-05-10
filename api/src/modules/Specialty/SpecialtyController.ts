@@ -30,3 +30,19 @@ export async function save(request: FastifyRequest, reply: FastifyReply) {
     throw error;
   }
 }
+
+export async function index(_request: FastifyRequest, reply: FastifyReply) {
+  try {
+    const specialtyService = SpecialtyServiceFactory.make();
+
+    const specialty = await specialtyService.index();
+
+    return reply.status(200).send(specialty);
+  } catch (error) {
+    if (error instanceof UnableToAccessDatabaseError) {
+      return reply.status(500).send({ message: error.message });
+    }
+
+    throw error;
+  }
+}

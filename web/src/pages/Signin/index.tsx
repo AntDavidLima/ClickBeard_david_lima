@@ -87,7 +87,7 @@ export function Signin() {
         },
       });
 
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify({ token, ...user }));
 
       navigate(user.admin ? '/appointments' : '/scheduling');
     } catch (error) {

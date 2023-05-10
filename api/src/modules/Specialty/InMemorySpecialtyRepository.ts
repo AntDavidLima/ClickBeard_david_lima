@@ -6,12 +6,20 @@ import { SpecialtyRepository } from './SpecialtyRepository';
 export class InMemorySpecialtyRepository implements SpecialtyRepository {
   private specialties: Specialty[] = [];
 
+  async findAll() {
+    return this.specialties;
+  }
+
   async findById(id: UUID) {
-    return this.specialties.find(specialty => specialty.id === id) ?? null;
+    return this.specialties.find((specialty) => specialty.id === id) ?? null;
   }
 
   async findByName(name: string) {
-    return this.specialties.find(specialty => specialty.name.toLowerCase === name.toLowerCase) ?? null; 
+    return (
+      this.specialties.find(
+        (specialty) => specialty.name.toLowerCase === name.toLowerCase
+      ) ?? null
+    );
   }
 
   async save(specialty: Specialty) {
@@ -19,5 +27,4 @@ export class InMemorySpecialtyRepository implements SpecialtyRepository {
 
     return specialty;
   }
-
 }

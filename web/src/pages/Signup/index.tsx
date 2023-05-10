@@ -85,7 +85,7 @@ export function Signup() {
         },
       });
 
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify({ token, ...user }));
     } catch (error) {
       console.error(error);
     }

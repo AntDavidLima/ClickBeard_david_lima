@@ -5,10 +5,12 @@ import { SpecialtyRepository } from './SpecialtyRepository';
 import { ResourceAlreadyExistsError } from '@/Errors/ResourceAlreadyExistsError';
 
 export class SpecialtyService {
-  constructor (private specialtyRepository: SpecialtyRepository) {}
+  constructor(private specialtyRepository: SpecialtyRepository) {}
 
   async save(specialty: Omit<Specialty, 'id'>) {
-    const specialtyExists = await this.specialtyRepository.findByName(specialty.name);
+    const specialtyExists = await this.specialtyRepository.findByName(
+      specialty.name
+    );
 
     if (specialtyExists) {
       throw new ResourceAlreadyExistsError('This specialty already exists.');
@@ -16,9 +18,13 @@ export class SpecialtyService {
 
     const params = {
       id: randomUUID(),
-      ...specialty
+      ...specialty,
     };
 
     return await this.specialtyRepository.save(params);
+  }
+
+  async index() {
+    return await this.specialtyRepository.findAll();
   }
 }
