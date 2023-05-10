@@ -1,9 +1,10 @@
 import fastify from 'fastify';
+import { ZodError } from 'zod';
+import cors from 'cors';
+import fastifyJwt from '@fastify/jwt';
 
 import { appRoutes } from './routes';
-import { ZodError } from 'zod';
 import { env } from '@/env';
-import fastifyJwt from '@fastify/jwt';
 
 export const app = fastify();
 
@@ -24,5 +25,5 @@ app.setErrorHandler((error, _request, reply) => {
     console.error(error);
   }
 
-  return reply.status(500).send({ message: 'Internal server error. '});
+  return reply.status(500).send({ message: 'Internal server error. ' });
 });

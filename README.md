@@ -2,6 +2,31 @@
 
 Sistema de agendamento para barbearia
 
+## Rodando localmente
+
+- Crie uma cópia do arquivo .env.example - tanto o da pasta api quanto o da pasta web - no mesmo diretório com o nome de `.env` . Os valores fornecidos no arquivo de exemplo são os ideais para rodar a aplicação sem precisar editar as variáveis.
+
+### Rodando a API com Docker
+
+- Já com o Docker rodando e o Docker Compose instalado, entre no diretório api e execute `docker compose up` . Aguarde até a mensagem de sucesso aparecer.
+
+### Rodando a API manualmente
+
+- Dentro do diretório api, execute o comando `npm install` para instalar suas dependências.
+- Você precisará de uma instância do PostgreSQL rodando para executar o próximo passo. Modifique as variáveis de ambiente caso necessário.
+- Execute o comando `npx db-migrate up` para rodar as migrations do banco de dados.
+- Inicie a aplicação com `npm run start:dev` . Aguarde a mensagem de sucesso.
+
+### Rodando o cliente web
+
+- Já no diretório web, execute o comando `npm install` para instalar as dependências.
+- Execute `npm run dev` para iniciar a aplicação. Ela ficará disponível em http://localhost:5173 .
+
+## ⚠ IMPORTANTE ⚠
+
+- O sistema divide os usuários entre admin e não admin. O primeiro usuário cadastrado terá o cargo de admin, os demais não.
+- Nas migrations já existem alguns barbeiros e especialidades cadastradas.
+
 ## Base de dados
 
 PostgreSQL
@@ -12,12 +37,12 @@ PostgreSQL
 
 ### Funcionais
 
-- [x] Deve ser possível cadastrar barbeiros
-- [x] Deve ser possível cadastrar especialidades
+- [ ] Deve ser possível cadastrar barbeiros
+- [ ] Deve ser possível cadastrar especialidades
 - [x] Os clientes devem poder se cadastrar
 - [x] Os clientes devem poder logar no sistema
 - [x] Os clientes devem poder agendar horários
-- [x] Os clientes devem poder cancelar agendamentos
+- [ ] Os clientes devem poder cancelar agendamentos
 - [ ] Os clientes devem poder visualizar seus agendamentos
 - [ ] O ADM deve poder visualizar os agendamentos futuros
 
@@ -30,7 +55,7 @@ PostgreSQL
 - [x] Um barbeiro pode ter mais de uma especialidade
 - [x] Um agendamento só pode ser cancelado até duas horas antes do horário marcado
 - [ ] Barbeiros só podem ser cadastrados por ADMs
-- [x] No momento de agendar horário, os barbeiros devem ser listados por especialidade
+- [ ] No momento de agendar horário, os barbeiros devem ser listados por especialidade
 - [x] Não podem existir mais de uma especialidade com o mesmo nome
 
 ### Não funcionais
@@ -41,4 +66,4 @@ PostgreSQL
 - [x] A barbearia funciona todos os dias de 8:00h às 18:00h
 - [x] Um atendimento demora exatamente 30 minutos
 - [ ] A API deve ser documentada utilizando o Swagger
-- [ ] O processo para executar a aplicação localmente deve ser documentado
+- [x] O processo para executar a aplicação localmente deve ser documentado
