@@ -11,6 +11,8 @@ import moment, { Moment } from 'moment';
 import { useEffect, useState } from 'react';
 import { api } from '../../www/api';
 import { PickerSelectionState } from '@mui/x-date-pickers/internals';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Appointment {
   id: string;
@@ -52,7 +54,7 @@ export function Scheduling() {
     minute: time?.minute(),
   });
 
-  const submitDisabled = !specialty || !barber || !isTimeChoose;
+  const submitDisabled = !specialty || !barber || !isTimeChoose || !time;
 
   useEffect(() => {
     loadBusySchedules();
@@ -65,6 +67,7 @@ export function Scheduling() {
 
   return (
     <main className="bg-gray-900 w-full text-white flex-1">
+      <ToastContainer />
       <div className="max-w-screen-xl mx-auto px-4 py-8 h-full flex flex-col justify-between">
         <div className="flex gap-16 max-h-[30vh]">
           <ScrollArea.Root className="overflow-hidden flex-1">
@@ -263,33 +266,53 @@ export function Scheduling() {
   }
 
   async function handleSubmit() {
-    await api.post('/appointments', {
-      appointment_time: appointmentTime,
-      specialty_id: specialty,
-      barber_id: barber,
-    });
+    try {
+      await api.post('/appointments', {
+        appointment_time: appointmentTime,
+        specialty_id: specialty,
+        barber_id: barber,
+      });
+
+      toast.success('Agendamento criado com sucesso');
+      loadBusySchedules();
+      setTime(null);
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    }
   }
 
   function loadBusySchedules() {
-    api
-      .get<Appointment[]>('/appointments/date', {
-        params: { date: date?.format('YYYY-MM-DD') },
-      })
-      .then((response) => {
-        setBusySchedulesToday(response.data);
-      });
+    try {
+      api
+        .get<Appointment[]>('/appointments/date', {
+          params: { date: date?.format('YYYY-MM-DD') },
+        })
+        .then((response) => {
+          setBusySchedulesToday(response.data);
+        });
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    }
   }
 
   function loadBarbers() {
-    api.get<Barber[]>('/barbers').then((response) => {
-      setBarbers(response.data);
-    });
+    try {
+      api.get<Barber[]>('/barbers').then((response) => {
+        setBarbers(response.data);
+      });
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    }
   }
 
   function loadSpecialties() {
-    api.get<Specialty[]>('/specialties').then((response) => {
-      setSpecialties(response.data);
-    });
+    try {
+      api.get<Specialty[]>('/specialties').then((response) => {
+        setSpecialties(response.data);
+      });
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    }
   }
 
   function handleChangeDate(date: Moment | null) {

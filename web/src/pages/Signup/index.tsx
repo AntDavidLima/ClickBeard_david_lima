@@ -1,6 +1,8 @@
 import * as Form from '@radix-ui/react-form';
 import { FormEvent } from 'react';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { Input } from '../../components/Input';
 import { api } from '../../www/api';
@@ -12,6 +14,7 @@ export function Signup() {
         'bg-[url(background.jpg)] h-screen bg-cover bg-no-repeat flex bg-center items-center justify-center'
       }
     >
+      <ToastContainer />
       <Form.Root
         onSubmit={handleSubmit}
         className="bg-gray-950 bg-opacity-90 rounded text-white font-semibold gap-4 flex flex-col w-96 p-12 mx-4"
@@ -86,8 +89,8 @@ export function Signup() {
       });
 
       localStorage.setItem('user', JSON.stringify({ token, ...user }));
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      toast.error(error.response.data.message);
     }
   }
 }
