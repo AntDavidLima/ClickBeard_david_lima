@@ -1,6 +1,6 @@
 import fastify from 'fastify';
 import { ZodError } from 'zod';
-import cors from 'cors';
+import cors from '@fastify/cors';
 import fastifyJwt from '@fastify/jwt';
 
 import { appRoutes } from './routes';
@@ -13,6 +13,10 @@ app.register(fastifyJwt, {
 });
 
 app.register(appRoutes);
+
+app.register(cors, {
+  origin: true,
+});
 
 app.setErrorHandler((error, _request, reply) => {
   if (error instanceof ZodError) {
