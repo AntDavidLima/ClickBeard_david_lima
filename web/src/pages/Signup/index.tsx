@@ -1,6 +1,6 @@
 import * as Form from '@radix-ui/react-form';
 import { FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -8,6 +8,16 @@ import { Input } from '../../components/Input';
 import { api } from '../../www/api';
 
 export function Signup() {
+  const navigate = useNavigate();
+
+  const user = localStorage.getItem('user')
+    ? JSON.parse(localStorage.getItem('user') as string)
+    : null;
+
+  if (user) {
+    return <Navigate to={user.admin ? '/appointments' : '/scheduling'} />;
+  }
+
   return (
     <main
       className={
@@ -89,6 +99,8 @@ export function Signup() {
       });
 
       localStorage.setItem('user', JSON.stringify({ token, ...user }));
+
+      navigate(user.admin ? '/appointments' : '/scheduling');
     } catch (error: any) {
       toast.error(error.response.data.message);
     }

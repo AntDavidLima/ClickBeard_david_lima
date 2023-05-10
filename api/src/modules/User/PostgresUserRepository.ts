@@ -27,7 +27,7 @@ export class PostgresUserRepository implements UserRepository {
 
     const { rows } = await client.query('SELECT * FROM users');
 
-    const sql = 'INSERT INTO users VALUES ($1, $2, $3, $4)';
+    const sql = 'INSERT INTO users VALUES ($1, $2, $3, $4, $5)';
 
     const nextUser = {
       ...user,
