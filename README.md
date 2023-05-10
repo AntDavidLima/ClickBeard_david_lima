@@ -6,14 +6,10 @@ Sistema de agendamento para barbearia
 
 - Crie uma cópia do arquivo .env.example - tanto o da pasta api quanto o da pasta web - no mesmo diretório com o nome de `.env` . Os valores fornecidos no arquivo de exemplo são os ideais para rodar a aplicação sem precisar editar as variáveis.
 
-### Rodando a API com Docker
-
-- Já com o Docker rodando e o Docker Compose instalado, entre no diretório api e execute `docker compose up` . Aguarde até a mensagem de sucesso aparecer.
-
-### Rodando a API manualmente
+### Rodando a api
 
 - Dentro do diretório api, execute o comando `npm install` para instalar suas dependências.
-- Você precisará de uma instância do PostgreSQL rodando para executar o próximo passo. Modifique as variáveis de ambiente caso necessário.
+- Você precisará de uma instância do PostgreSQL rodando para executar o próximo passo. O nome do banco deverá ser o mesmo que o configurado no .env. Modifique as variáveis de ambiente caso necessário.
 - Execute o comando `npx db-migrate up` para rodar as migrations do banco de dados.
 - Inicie a aplicação com `npm run start:dev` . Aguarde a mensagem de sucesso.
 
