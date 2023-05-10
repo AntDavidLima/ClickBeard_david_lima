@@ -1,14 +1,14 @@
 import { Routes, Route } from 'react-router-dom';
 
-import { Signin } from './pages/Signin';
-import { Signup } from './pages/Signup';
-import { Scheduling } from './pages/Scheduling';
-import { DefaultLayout } from './layouts/DefaultLayout';
+import { Signin } from '../pages/Signin';
+import { Signup } from '../pages/Signup';
+import { Scheduling } from '../pages/Scheduling';
+import { LoggedLayout } from '../layouts/LoggedLayout';
 
 export function Router() {
   return (
     <Routes>
-      <Route path="/" element={<DefaultLayout />}>
+      <Route path="/" element={<LoggedLayout />}>
         <Route path="/scheduling" element={<Scheduling />} />
       </Route>
 

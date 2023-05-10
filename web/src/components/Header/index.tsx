@@ -1,7 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { SignOut } from '@phosphor-icons/react';
 
 export function Header() {
+  const navigate = useNavigate();
+
   return (
     <header className="p-3 bg-gray-800 flex justify-between items-center">
       <div className="flex items-center gap-6 font-semibold">
@@ -20,9 +22,18 @@ export function Header() {
           </ul>
         </nav>
       </div>
-      <button className="text-white font-semibold flex leading-3 gap-1">
+      <button
+        onClick={handleLogout}
+        className="text-white font-semibold flex leading-3 gap-1"
+      >
         Sair <SignOut />
       </button>
     </header>
   );
+
+  function handleLogout() {
+    localStorage.removeItem('token');
+
+    navigate('/signin');
+  }
 }
