@@ -25,8 +25,16 @@ export class PostgresUserRepository implements UserRepository {
   async save(user: User) {
     const client = await pool.connect();
 
+    const { rows } = await client.query('SELECT * FROM users');
+
     const sql = 'INSERT INTO users VALUES ($1, $2, $3, $4)';
-    const params = Object.values(user);
+
+    const nextUser = {
+      ...user,
+      admin: rows.length > 0 ? false : true,
+    };
+
+    const params = Object.values(nextUser);
 
     try {
       await client.query(sql, params);
