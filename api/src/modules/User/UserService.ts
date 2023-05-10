@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto';
+import { UUID, randomUUID } from 'crypto';
 import bcrypt from 'bcrypt';
 
 import { UserRepository } from './UserRepository';
@@ -29,5 +29,9 @@ export class UserService {
     };
 
     return this.userRepository.save(params);
+  }
+
+  async show(id: UUID) {
+    return this.userRepository.findById(id);
   }
 }

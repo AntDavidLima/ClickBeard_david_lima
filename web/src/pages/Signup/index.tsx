@@ -1,13 +1,11 @@
 import * as Form from '@radix-ui/react-form';
 import { FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Input } from '../../components/Input';
 import { api } from '../../www/api';
 
 export function Signup() {
-  const navigate = useNavigate();
-
   return (
     <main
       className={
@@ -24,31 +22,38 @@ export function Signup() {
         </div>
         <Form.Field name="name">
           <Form.Label className="sr-only">Nome</Form.Label>
-          <Form.Control asChild placeholder="Nome">
-            <Input type="text" />
+          <Form.Control asChild placeholder="Nome" type="text">
+            <Input />
           </Form.Control>
+          <Form.Message match="valueMissing">Campo obrigatório</Form.Message>
         </Form.Field>
         <Form.Field name="email">
           <Form.Label className="sr-only">Email</Form.Label>
           <Form.Control asChild placeholder="Email">
             <Input type="email" />
           </Form.Control>
+          <Form.Message match="valueMissing">Campo obrigatório</Form.Message>
+          <Form.Message match="typeMismatch">Email inválido</Form.Message>
         </Form.Field>
         <Form.Field name="password">
           <Form.Label className="sr-only">Senha</Form.Label>
-          <Form.Control asChild placeholder="Senha">
-            <Input type="password" />
+          <Form.Control asChild placeholder="Senha (Mínimo 6 caracteres)">
+            <Input type="password" min={6} />
           </Form.Control>
+          <Form.Message match="valueMissing">Campo obrigatório</Form.Message>
+          <Form.Message match="tooShort">Mínimo de 6 caracteres</Form.Message>
         </Form.Field>
-        <Form.Submit className="bg-amber-600 p-2 rounded-3xl mt-8">
-          Cadastrar
+        <Form.Submit asChild>
+          <button className="bg-amber-600 p-2 rounded-3xl mt-8">
+            Cadastrar
+          </button>
         </Form.Submit>
         <div className="my-4 flex items-center gap-2">
           <hr className="flex-1" />
           ou
           <hr className="flex-1" />
         </div>
-        <Link to="/signin" className="text-amber-600 text-center">
+        <Link replace to="/signin" className="text-amber-600 text-center">
           Fazer login
         </Link>
       </Form.Root>
@@ -66,15 +71,21 @@ export function Signup() {
     };
 
     try {
-      const { data } = await api.post<{ token: string }>('/users', {
+      const {
+        data: { token },
+      } = await api.post<{ token: string }>('/users', {
         name: name.value,
         email: email.value,
         password: password.value,
       });
 
-      localStorage.setItem('token', data.token);
+      const { data: user } = await api.get('/users', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      navigate('/scheduling');
+      localStorage.setItem('user', JSON.stringify(user));
     } catch (error) {
       console.error(error);
     }

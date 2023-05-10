@@ -18,25 +18,29 @@ describe('User service', () => {
     const user = await userService.save({
       name: 'Jon Doe',
       email: 'jon@doe.com',
-      password: '123456'
+      password: '123456',
     });
 
     expect(user).toHaveProperty('id');
-    expect(user.id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
+    expect(user.id).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+    );
   });
 
   it('should not allow multiple users with the same email', async () => {
     await userService.save({
       name: 'Jon Doe',
       email: 'jon@doe.com',
-      password: '123456'
+      password: '123456',
     });
 
-    await expect(() => userService.save({
-      name: 'Jon Doe',
-      email: 'jon@doe.com',
-      password: '123456'
-    })).rejects.toBeInstanceOf(ResourceAlreadyExistsError);
+    await expect(() =>
+      userService.save({
+        name: 'Jon Doe',
+        email: 'jon@doe.com',
+        password: '123456',
+      })
+    ).rejects.toBeInstanceOf(ResourceAlreadyExistsError);
   });
 
   it('should hash the user password', async () => {
@@ -45,7 +49,7 @@ describe('User service', () => {
     const user = await userService.save({
       name: 'Jon Doe',
       email: 'jon@doe.com',
-      password
+      password,
     });
 
     expect(await compare(password, user.password_hash));

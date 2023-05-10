@@ -1,12 +1,21 @@
 import * as Form from '@radix-ui/react-form';
 import { FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 import { Input } from '../../components/Input';
 import { api } from '../../www/api';
+import { User } from '../../@types/User';
 
 export function Signin() {
   const navigate = useNavigate();
+
+  const user = localStorage.getItem('user')
+    ? JSON.parse(localStorage.getItem('user') as string)
+    : null;
+
+  if (user) {
+    return <Navigate to={user.admin ? '/appointments' : '/scheduling'} />;
+  }
 
   return (
     <main
@@ -27,12 +36,18 @@ export function Signin() {
           <Form.Control asChild placeholder="Email">
             <Input type="email" />
           </Form.Control>
+          <Form.Message match="valueMissing">Campo obrigatório</Form.Message>
+          <Form.Message match="typeMismatch">Email inválido</Form.Message>
         </Form.Field>
         <Form.Field name="password">
           <Form.Label className="sr-only">Senha</Form.Label>
-          <Form.Control asChild placeholder="Senha">
-            <Input type="password" />
+          <Form.Control asChild placeholder="Senha (Mínimo de 6 caracteres)">
+            <Input type="password" min={6} />
           </Form.Control>
+          <Form.Message match="valueMissing">Campo obrigatório</Form.Message>
+          <Form.Message match="rangeUnderflow">
+            Mínimo de 6 caracteres
+          </Form.Message>
         </Form.Field>
         <Form.Submit className="bg-amber-600 p-2 rounded-3xl mt-8">
           Acessar
@@ -59,14 +74,22 @@ export function Signin() {
     };
 
     try {
-      const { data } = await api.post<{ token: string }>('/users/session', {
+      const {
+        data: { token },
+      } = await api.post<{ token: string }>('/users/session', {
         email: email.value,
         password: password.value,
       });
 
-      localStorage.setItem('token', data.token);
+      const { data: user } = await api.get<User>('/users', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      navigate('/scheduling');
+      localStorage.setItem('user', JSON.stringify(user));
+
+      navigate(user.admin ? '/appointments' : '/scheduling');
     } catch (error) {
       console.log(error);
     }

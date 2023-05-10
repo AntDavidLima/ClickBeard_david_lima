@@ -2,8 +2,26 @@ import { pool } from '@/database';
 import { User } from './User';
 import { UserRepository } from './UserRepository';
 import { UnableToAccessDatabaseError } from '@/Errors/UnableToAccessDatabaseError';
+import { UUID } from 'crypto';
 
 export class PostgresUserRepository implements UserRepository {
+  async findById(id: UUID) {
+    const client = await pool.connect();
+
+    const sql = 'SELECT * FROM users WHERE id = $1';
+    const params = [id];
+
+    try {
+      const result = await client.query(sql, params);
+
+      return result.rows[0] ?? null;
+    } catch (error) {
+      throw new UnableToAccessDatabaseError(error as Error);
+    } finally {
+      client.release();
+    }
+  }
+
   async save(user: User) {
     const client = await pool.connect();
 
